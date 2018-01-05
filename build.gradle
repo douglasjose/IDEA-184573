@@ -5,11 +5,23 @@ repositories {
     jcenter()
 }
 
+// This task adds 'commons-lang3' to the 'compile' classpath
+task loadDependencies(type: com.douglasjose.tech.DependencyTask) {}
+
+// Loading all dependencies before compiling Java code; running 'gradle classes' works fine
+compileJava.dependsOn loadDependencies
+
+// Running 'gradle dependencies' will show both project dependencies
+project.tasks.getByName('dependencies').dependsOn('loadDependencies')
+
+// Loading all dependencies before generating IntelliJ project/module metadata, so importing 'project/module' works
+// However, 'linking' the Gradle project in IntelliJ and refreshing it ignores the dependencies loaded by the
+// 'loadDependencies' task.
+ideaModule.dependsOn loadDependencies
+
+
 dependencies {
-    
-    compile 'org.apache.commons:commons-lang3:3.7'
+    //compile 'org.apache.commons:commons-lang3:3.7' // <-- Added by `DependencyTask` above
     compile 'org.apache.commons:commons-collections4:4.1'
 
-    // compile 'org.slf4j:slf4j-api:1.7.25'
-    // testCompile 'junit:junit:4.12'
 }
