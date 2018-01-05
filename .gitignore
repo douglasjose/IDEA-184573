@@ -1,1 +1,10 @@
 .gradle
+.classpath
+.project
+*.iml
+*.ipr
+*.iws
+.settings
+.vscode
+bin
+build
